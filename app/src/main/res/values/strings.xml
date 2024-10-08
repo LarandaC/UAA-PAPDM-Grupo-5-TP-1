@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PrimerParcial</string>
+    <string name="direccion1">Calle 123, Ciudad A</string>
+    <string name="direccion2">Avenida 456, Ciudad B</string>
+    <string name="direccion3">Calle 789, Ciudad C</string>
+    <string name="direccion4">Boulevard 101, Ciudad D</string>
 </resources>
