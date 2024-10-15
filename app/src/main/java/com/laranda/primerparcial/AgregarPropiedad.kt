@@ -167,7 +167,7 @@ fun AgregarPropiedadScreen(){
                 value = superficie,
                 onValueChange = {superficie = it},
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                placeholder = { Text(text = "Ej:400")}
+                placeholder = { Text(text = "Ej:400m2")}
 
 
             )
