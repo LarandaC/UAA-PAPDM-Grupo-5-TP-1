@@ -28,6 +28,7 @@ import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,7 +63,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ParcialApp() {
-
     Column (
         modifier = Modifier
             .padding(16.dp),
@@ -116,20 +116,10 @@ fun PropiedadList(
                     .heightIn(max = 300.dp),
                 contentScale = ContentScale.Crop
             )
-
-//            Image(
-//                painter = painterResource(propiedad.imageResourceId),
-//                contentDescription = null,
-//                modifier = Modifier
-//                    .fillMaxWidth()  // Make the image fill the width of the Card
-//                    .heightIn(max = 300.dp),  // Set the maximum height for the image
-//                contentScale = ContentScale.Crop  // Ensures the image scales to fill the space without distortion
-//            )
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .align(Alignment.BottomStart)  // Align at the bottom-left of the image
+                    .align(Alignment.BottomStart)
                     .padding(8.dp)
                     .clip(
                         MaterialTheme.shapes.small
@@ -138,8 +128,8 @@ fun PropiedadList(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .align(Alignment.BottomStart)  // Align at the bottom-left of the image
-                        .background(color = Color.White.copy(alpha = 0.8f))  // Semi-transparent background
+                        .align(Alignment.BottomStart)
+                        .background(color = Color.White.copy(alpha = 0.8f))
                         .padding(8.dp)
                 ) {
                     InfoPropiedad(propiedad)
@@ -202,6 +192,9 @@ fun InfoPropiedad(
                 Text(
                     text = "Dirección: ",
                     fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = propiedad.direccion,
                 )
             }
             Row {
