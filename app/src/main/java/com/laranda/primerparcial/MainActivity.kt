@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
@@ -28,7 +29,10 @@ import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -63,6 +67,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ParcialApp() {
+    val propiedadState = remember { mutableStateListOf<Propiedad>() }
+    propiedadState.addAll(propiedades)
+
     Column (
         modifier = Modifier
             .padding(16.dp),
@@ -88,9 +95,14 @@ fun ParcialApp() {
 
         // Lista de propiedades
         LazyColumn {
-            if (propiedades.isNotEmpty()) {
-                items(propiedades) { propiedad ->
-                    PropiedadList(propiedad = propiedad, modifier = Modifier.padding(8.dp))
+            if (propiedadState.isNotEmpty()) {
+                items(propiedadState) { propiedad ->
+                    PropiedadList(
+                        propiedad = propiedad,
+                        onDelete = {
+                            propiedadState.remove(propiedad)
+                        },
+                        modifier = Modifier.padding(8.dp))
                 }
             } else {
                 item {
@@ -104,7 +116,9 @@ fun ParcialApp() {
 
 @Composable
 fun PropiedadList(
-    propiedad: Propiedad, modifier: Modifier = Modifier
+    propiedad: Propiedad,
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(modifier = modifier) {
         Box {
@@ -132,7 +146,7 @@ fun PropiedadList(
                         .background(color = Color.White.copy(alpha = 0.8f))
                         .padding(8.dp)
                 ) {
-                    InfoPropiedad(propiedad)
+                    InfoPropiedad(propiedad, onDelete)
                 }
             }
 
@@ -142,7 +156,9 @@ fun PropiedadList(
 
 @Composable
 fun InfoPropiedad(
-    propiedad: Propiedad, modifier: Modifier = Modifier
+    propiedad: Propiedad,
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
@@ -199,9 +215,7 @@ fun InfoPropiedad(
             }
             Row {
                 SmallFloatingActionButton(
-                    onClick = {
-                    /*TODO*/ // logica para que borre
-                    },
+                    onClick = onDelete,
                     containerColor = MaterialTheme.colorScheme.onErrorContainer,
                     contentColor = MaterialTheme.colorScheme.surface
                 ) {

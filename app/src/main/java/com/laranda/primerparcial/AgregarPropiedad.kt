@@ -45,6 +45,7 @@ fun AgregarPropiedadScreen(){
     var superficie by rememberSaveable { mutableStateOf("") }
     var imagenUrl by rememberSaveable { mutableStateOf("") }
 
+
     var expanded by remember { mutableStateOf(false) }
     val opciones = listOf("Casa", "Apartamento")
     var opcionElegida by rememberSaveable { mutableStateOf(opciones[0]) }
@@ -166,7 +167,14 @@ fun AgregarPropiedadScreen(){
                 value = superficie,
                 onValueChange = {superficie = it},
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                placeholder = { Text(text = "Ej:400")}
+
+
             )
+            /*Text(
+                text = "m²",
+                modifier = Modifier.padding(start = 8.dp)
+            )*/
         }
     }
 

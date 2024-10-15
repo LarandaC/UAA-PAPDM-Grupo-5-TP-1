@@ -3,7 +3,7 @@
     <string name="add_direccion">Dirección</string>
     <string name="add_price">Precio</string>
     <string name="add_habitaciones">Habitaciones</string>
-    <string name="add_superficie">Superficie</string>
+    <string name="add_superficie">Superficie m²</string>
     <string name="add_tipo">Tipo</string>
     <string name="guardar">Guardar</string>
     <string name="lista">Lista de propiedades</string>
