@@ -5,15 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import coil.compose.AsyncImage
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -40,12 +37,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.laranda.primerparcial.data.Propiedad
 import com.laranda.primerparcial.data.propiedades
 import com.laranda.primerparcial.ui.theme.PrimerParcialTheme
@@ -56,11 +54,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PrimerParcialTheme {
-                Surface (
+                Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
-                ){
-
+                ) {
+                    ParcialApp()
                 }
             }
         }
@@ -95,45 +93,51 @@ fun ParcialApp() {
             }
         },
     ) { innerPadding ->
-
         Column(
             modifier = Modifier
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-
-            Text(
-                text = stringResource(id = R.string.add_property),
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.displaySmall
-            )
-
-            AgregarPropiedadScreen()
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = stringResource(id = R.string.lista),
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.displaySmall
-            )
-
-
-            // Lista de propiedades
-            LazyColumn {
-                if (propiedadState.isNotEmpty()) {
-                    items(propiedadState) { propiedad ->
-                        PropiedadList(
-                            propiedad = propiedad,
-                            onDelete = {
-                                propiedadState.remove(propiedad)
-                            },
-                            modifier = Modifier.padding(8.dp)
-                        )
-                    }
-                } else {
-                    item {
-                        Text("No hay propiedades disponibles.")
+            if (mostrarFormPropiedad) {
+                Text(
+                    text = stringResource(id = R.string.add_property),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
+                    style = MaterialTheme.typography.displaySmall,
+                    modifier = Modifier.padding(8.dp)
+                )
+                Column(
+                    modifier = Modifier.padding(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    AgregarPropiedadScreen()
+                }
+            } else {
+                Text(
+                    text = stringResource(id = R.string.lista),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
+                    style = MaterialTheme.typography.displaySmall,
+                    modifier = Modifier.padding(8.dp)
+                )
+                // Lista de propiedades
+                LazyColumn (
+                    modifier = Modifier.padding(8.dp),
+                ) {
+                    if (propiedadState.isNotEmpty()) {
+                        items(propiedadState) { propiedad ->
+                            PropiedadList(
+                                propiedad = propiedad,
+                                onDelete = {
+                                    propiedadState.remove(propiedad)
+                                },
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        }
+                    } else {
+                        item {
+                            Text("No hay propiedades disponibles.")
+                        }
                     }
                 }
             }
@@ -142,8 +146,8 @@ fun ParcialApp() {
     }
 
 
-
 }
+
 @Composable
 fun PropiedadList(
     propiedad: Propiedad,
@@ -185,7 +189,6 @@ fun PropiedadList(
 }
 
 
-
 @Composable
 fun InfoPropiedad(
     propiedad: Propiedad,
@@ -193,7 +196,7 @@ fun InfoPropiedad(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         //Direccion
@@ -215,10 +218,12 @@ fun InfoPropiedad(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween // Espacio entre elementos
         ) {
-            items(listOf(
-                Pair("Tipo: ", propiedad.tipo.name),
-                Pair("Habitaciones: ", propiedad.numHabitaciones.toString())
-            )) { (titulo, valor) ->
+            items(
+                listOf(
+                    Pair("Tipo: ", propiedad.tipo.name),
+                    Pair("Habitaciones: ", propiedad.numHabitaciones.toString())
+                )
+            ) { (titulo, valor) ->
                 Row(
                     modifier = Modifier.padding(8.dp), // Espacio alrededor de cada item
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -261,7 +266,7 @@ fun InfoPropiedad(
             contentColor = MaterialTheme.colorScheme.surface,
 
             ) {
-            Icon(Icons.Filled.Delete, "Eliminar" )
+            Icon(Icons.Filled.Delete, "Eliminar")
         }
 
     }
@@ -274,6 +279,7 @@ fun ParcialAppPreview() {
         ParcialApp()
     }
 }
+
 @Preview
 @Composable
 fun ParcialAppDarkPreview() {
