@@ -41,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.laranda.primerparcial.data.Propiedad
+import com.laranda.primerparcial.data.delete
 import com.laranda.primerparcial.data.propiedades
 import com.laranda.primerparcial.ui.theme.PrimerParcialTheme
 
@@ -93,12 +94,12 @@ fun ParcialApp() {
 
         // Lista de propiedades
         LazyColumn {
-            if (propiedadState.isNotEmpty()) {
-                items(propiedadState) { propiedad ->
+            if (propiedades.isNotEmpty()) {
+                items(propiedades) { propiedad ->
                     PropiedadList(
                         propiedad = propiedad,
                         onDelete = {
-                            propiedadState.remove(propiedad)
+                            delete(propiedad)
                         },
                         modifier = Modifier.padding(8.dp))
                 }

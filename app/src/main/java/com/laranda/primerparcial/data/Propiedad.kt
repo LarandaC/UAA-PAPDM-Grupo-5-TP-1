@@ -19,7 +19,7 @@ data class Propiedad(
 )
 
 val propiedades = mutableStateListOf<Propiedad>(
-    Propiedad(
+    /*Propiedad(
         direccion = "Calle 123, Ciudad A",
         tipo = tipoPropiedad.CASA,
         precio = 250000.0,
@@ -34,7 +34,7 @@ val propiedades = mutableStateListOf<Propiedad>(
         superficie = 100.0,
         numHabitaciones = 2,
         imageResourceId = "https://definicion.de/wp-content/uploads/2021/01/Apartamento-1.jpg"
-    ),
+    ),*/
 )
 
 fun add(propiedad: Propiedad) {
