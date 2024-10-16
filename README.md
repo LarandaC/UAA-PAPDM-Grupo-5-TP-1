@@ -31,7 +31,7 @@ Sigue estos pasos para ejecutar la aplicación en tu entorno local:
 Clona el repositorio en tu máquina local utilizando el siguiente comando:
 
    ```bash
-   git clone https://github.com/LarandaC/PrimerParcial.git
+   git clone https://github.com/LarandaC/UAA-PAPDM-Grupo-5-TP-1.git
   ```
 
 ### 2. Abrir el Proyecto en Android Studio
@@ -50,13 +50,15 @@ Clona el repositorio en tu máquina local utilizando el siguiente comando:
 Puedes ejecutar la aplicación en un emulador o en un dispositivo físico.
 
     Emulador:
-        Ve a Tools > AVD Manager.
+        Ve a Tools > Devide Manager
         Crea un nuevo dispositivo virtual si no tienes uno.
         Inicia el emulador.
 
     Dispositivo físico:
         Asegúrate de que la depuración USB esté habilitada en tu dispositivo.
         Conecta tu dispositivo a la computadora.
+        Elige al dispositivo.
+        Inicia el emulador.
 
 ### 5. Ejecutar la Aplicación
 
@@ -67,8 +69,16 @@ Puedes ejecutar la aplicación en un emulador o en un dispositivo físico.
 
 Una vez que la aplicación se compile e inicie, deberías poder verla en el dispositivo seleccionado. 
 
-
-
+## 📱 Uso de la aplicación
+> [!NOTE]
+> El tema de la aplicación cambia según el tema establecido en el celular.
+> - En la pantalla principal aparecerá la lista de las propiedadees, en caso de que no haya propiedades, un mensaje.
+> - Al apretar en el botón 'Añadir propiedad', llevará a la pantalla para agregar propiedad.
+> - Ingresar todos los datos, junto a una URL válida.
+> - Apretar en 'Guardar'.
+> - Volver a la pantalla anterior con el botón 'Atras'.
+> - Se visualizará la lista de propiedades o el mensaje.
+> - Si quiere eliminar una propiedad, apretar el botón rojo que aparece en la parte de abajo de cada propiedad.
 
 ## 📝 Estructura del proyecto
 ```plaintext
