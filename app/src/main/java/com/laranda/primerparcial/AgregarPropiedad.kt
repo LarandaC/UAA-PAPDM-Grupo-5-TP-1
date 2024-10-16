@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -221,7 +222,10 @@ fun AgregarPropiedadScreen(){
                 superficie = ""
                 imagenUrl = "" }
         },
-        shape = MaterialTheme.shapes.extraLarge
+        shape = MaterialTheme.shapes.extraLarge,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary
+        )
     ) {
         Text(
             text = stringResource(id = R.string.guardar),

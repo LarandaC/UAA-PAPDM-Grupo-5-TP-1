@@ -141,7 +141,7 @@ fun PropiedadList(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomStart)
-                        .background(color = Color.White.copy(alpha = 0.8f))
+                        .background(color = MaterialTheme.colorScheme.background.copy(alpha = 0.8f))
                         .padding(8.dp)
                 ) {
                     InfoPropiedad(propiedad, onDelete)
@@ -240,3 +240,11 @@ fun ParcialAppPreview() {
         ParcialApp()
     }
 }
+@Preview
+@Composable
+fun ParcialAppDarkPreview() {
+    PrimerParcialTheme(darkTheme = true) {
+        ParcialApp()
+    }
+}
+
