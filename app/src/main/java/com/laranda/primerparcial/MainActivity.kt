@@ -22,15 +22,21 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,7 +47,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.laranda.primerparcial.data.Propiedad
-import com.laranda.primerparcial.data.delete
 import com.laranda.primerparcial.data.propiedades
 import com.laranda.primerparcial.ui.theme.PrimerParcialTheme
 
@@ -55,64 +60,90 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ){
-                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        ParcialApp()
-                    }
+
                 }
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParcialApp() {
     val propiedadState = remember { mutableStateListOf<Propiedad>() }
     propiedadState.addAll(propiedades)
+    var mostrarFormPropiedad by remember { mutableStateOf(false) }
 
-    Column (
-        modifier = Modifier
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-
-        Text(
-            text = stringResource(id = R.string.add_property) ,
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.displaySmall
-        )
-
-        AgregarPropiedadScreen()
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = stringResource(id = R.string.lista) ,
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.displaySmall
-        )
-
-
-        // Lista de propiedades
-        LazyColumn {
-            if (propiedades.isNotEmpty()) {
-                items(propiedades) { propiedad ->
-                    PropiedadList(
-                        propiedad = propiedad,
-                        onDelete = {
-                            delete(propiedad)
-                        },
-                        modifier = Modifier.padding(8.dp))
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = { Text("Parcial 1 - Grupo 5") },
+            )
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = {
+                    mostrarFormPropiedad = !mostrarFormPropiedad
                 }
-            } else {
-                item {
-                    Text("No hay propiedades disponibles.")
+            ) {
+                if (mostrarFormPropiedad) {
+                    Text("Atras")
+                } else {
+                    Text("Añadir propiedad")
                 }
             }
+        },
+    ) { innerPadding ->
+
+        Column(
+            modifier = Modifier
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+
+            Text(
+                text = stringResource(id = R.string.add_property),
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.displaySmall
+            )
+
+            AgregarPropiedadScreen()
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = stringResource(id = R.string.lista),
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.displaySmall
+            )
+
+
+            // Lista de propiedades
+            LazyColumn {
+                if (propiedadState.isNotEmpty()) {
+                    items(propiedadState) { propiedad ->
+                        PropiedadList(
+                            propiedad = propiedad,
+                            onDelete = {
+                                propiedadState.remove(propiedad)
+                            },
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+                } else {
+                    item {
+                        Text("No hay propiedades disponibles.")
+                    }
+                }
+            }
+
         }
-
     }
-}
 
+
+
+}
 @Composable
 fun PropiedadList(
     propiedad: Propiedad,
@@ -152,6 +183,8 @@ fun PropiedadList(
         }
     }
 }
+
+
 
 @Composable
 fun InfoPropiedad(
@@ -227,7 +260,7 @@ fun InfoPropiedad(
             containerColor = MaterialTheme.colorScheme.onErrorContainer,
             contentColor = MaterialTheme.colorScheme.surface,
 
-        ) {
+            ) {
             Icon(Icons.Filled.Delete, "Eliminar" )
         }
 
