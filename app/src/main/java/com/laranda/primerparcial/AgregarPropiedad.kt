@@ -33,7 +33,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.laranda.primerparcial.data.add
 import com.laranda.primerparcial.data.Propiedad
-import com.laranda.primerparcial.data.listarPropiedades
 import com.laranda.primerparcial.data.propiedades
 import com.laranda.primerparcial.data.tipoPropiedad
 
