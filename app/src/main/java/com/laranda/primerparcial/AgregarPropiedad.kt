@@ -1,5 +1,6 @@
 package com.laranda.primerparcial
 
+import android.util.Patterns
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -168,7 +169,7 @@ fun AgregarPropiedadScreen(){
                 value = superficie,
                 onValueChange = {superficie = it},
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                placeholder = { Text(text = "Ej:400.0")}
+                placeholder = { Text(text = "Ej:400")}
             )
             Text(text = "m2" )
             /*Text(
@@ -245,8 +246,9 @@ fun validarForm(
         return "La dirección es obligatoria." to false
     }
 
-    if (habitaciones.isBlank() || habitaciones.toIntOrNull() == null) {
-        return "El número de habitaciones debe ser un número válido." to false
+    val habitacionesNumero = habitaciones.toIntOrNull()
+    if (habitaciones.isBlank() || habitacionesNumero == null || habitacionesNumero <= 0) {
+        return "El número de habitaciones debe ser un número entero válido y mayor a 0." to false
     }
 
     if (superficie.isBlank() || superficie.toDoubleOrNull() == null) {
@@ -259,6 +261,10 @@ fun validarForm(
 
     if (imagenUrl.isBlank()) {
         return "La URL de la imagen es obligatoria." to false
+    }
+
+    if (!Patterns.WEB_URL.matcher(imagenUrl).matches()) {
+        return "La URL ingresada no es válida." to false
     }
 
     return "" to true // Si todo está bien

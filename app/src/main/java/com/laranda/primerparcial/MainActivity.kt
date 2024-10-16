@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.laranda.primerparcial.data.Propiedad
+import com.laranda.primerparcial.data.delete
 import com.laranda.primerparcial.data.propiedades
 import com.laranda.primerparcial.ui.theme.PrimerParcialTheme
 
@@ -129,6 +130,7 @@ fun ParcialApp() {
                             PropiedadList(
                                 propiedad = propiedad,
                                 onDelete = {
+                                    propiedades.remove(propiedad)
                                     propiedadState.remove(propiedad)
                                 },
                                 modifier = Modifier.padding(8.dp)
@@ -261,7 +263,7 @@ fun InfoPropiedad(
         }
 
         SmallFloatingActionButton(
-            onClick = onDelete,
+            onClick = { onDelete()},
             containerColor = MaterialTheme.colorScheme.onErrorContainer,
             contentColor = MaterialTheme.colorScheme.surface,
 
