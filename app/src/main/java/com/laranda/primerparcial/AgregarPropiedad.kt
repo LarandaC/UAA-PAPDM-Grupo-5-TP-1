@@ -26,6 +26,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -44,7 +45,7 @@ fun AgregarPropiedadScreen(){
     var habitaciones by rememberSaveable { mutableStateOf("") }
     var superficie by rememberSaveable { mutableStateOf("") }
     var imagenUrl by rememberSaveable { mutableStateOf("") }
-
+    var errorMessage by remember { mutableStateOf("") }
 
     var expanded by remember { mutableStateOf(false) }
     val opciones = listOf("Casa", "Apartamento")
@@ -167,10 +168,9 @@ fun AgregarPropiedadScreen(){
                 value = superficie,
                 onValueChange = {superficie = it},
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                placeholder = { Text(text = "Ej:400m2")}
-
-
+                placeholder = { Text(text = "Ej:400.0")}
             )
+            Text(text = "m2" )
             /*Text(
                 text = "m²",
                 modifier = Modifier.padding(start = 8.dp)
@@ -191,30 +191,36 @@ fun AgregarPropiedadScreen(){
         placeholder = { Text(text = "https://example.com/imagen.jpg") },
     )
 
-    Spacer(modifier = Modifier.height(8.dp))
-
+    if (errorMessage.isNotEmpty()) {
+        Text(text = errorMessage, color = Color.Red)
+    }
+    Spacer(modifier = Modifier.height(4.dp))
     // Boton para guardar
     Button(
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp),
         onClick = {
-            val nuevaPropiedad = Propiedad(
-                direccion = direccion,
-                precio = price.toDouble(),
-                numHabitaciones = habitaciones.toInt(),
-                superficie = superficie.toDouble(),
-                tipo = if (opcionElegida == "Casa") tipoPropiedad.CASA else tipoPropiedad.APARTAMENTO,
-                imageResourceId = imagenUrl
-            )
-            add(nuevaPropiedad)
+            // Validaciones
+            val validaciones = validarForm(direccion, price, habitaciones, superficie, imagenUrl)
+            errorMessage = validaciones.first
 
-            direccion = ""
-            price = ""
-            habitaciones = ""
-            superficie = ""
-            imagenUrl = ""
-            
+            if (validaciones.second){
+                val nuevaPropiedad = Propiedad(
+                    direccion = direccion,
+                    precio = price.toDouble(),
+                    numHabitaciones = habitaciones.toInt(),
+                    superficie = superficie.toDouble(),
+                    tipo = if (opcionElegida == "Casa") tipoPropiedad.CASA else tipoPropiedad.APARTAMENTO,
+                    imageResourceId = imagenUrl
+                )
+                add(nuevaPropiedad)
+
+                direccion = ""
+                price = ""
+                habitaciones = ""
+                superficie = ""
+                imagenUrl = "" }
         },
         shape = MaterialTheme.shapes.extraLarge
     ) {
@@ -223,5 +229,34 @@ fun AgregarPropiedadScreen(){
             style = MaterialTheme.typography.bodyLarge
         )
     }
+}
 
+fun validarForm(
+    direccion: String,
+    habitaciones: String,
+    superficie: String,
+    precio: String,
+    imagenUrl: String
+): Pair<String, Boolean> {
+    if (direccion.isBlank()) {
+        return "La dirección es obligatoria." to false
+    }
+
+    if (habitaciones.isBlank() || habitaciones.toIntOrNull() == null) {
+        return "El número de habitaciones debe ser un número válido." to false
+    }
+
+    if (superficie.isBlank() || superficie.toDoubleOrNull() == null) {
+        return "La superficie debe ser un número válido." to false
+    }
+
+    if (precio.isBlank() || precio.toDoubleOrNull() == null) {
+        return "El precio debe ser un número válido." to false
+    }
+
+    if (imagenUrl.isBlank()) {
+        return "La URL de la imagen es obligatoria." to false
+    }
+
+    return "" to true // Si todo está bien
 }

@@ -37,15 +37,11 @@ val propiedades = mutableStateListOf<Propiedad>(
     ),
 )
 
-fun listarPropiedades(): List<Propiedad> {
-    return propiedades
-}
-
 fun add(propiedad: Propiedad) {
     propiedades.add(propiedad)
 }
 
-fun eliminarPropiedad(propiedad: Propiedad) {
+fun delete(propiedad: Propiedad) {
     propiedades.remove(propiedad)
 }
 

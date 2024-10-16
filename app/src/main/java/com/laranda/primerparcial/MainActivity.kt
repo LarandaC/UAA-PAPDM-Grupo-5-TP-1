@@ -17,8 +17,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
@@ -30,9 +30,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -164,65 +162,74 @@ fun InfoPropiedad(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
+        //Direccion
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = propiedad.tipo.name,
-            )
-            Text(
-                text = "$${propiedad.precio}",
+                text = "Dirección: ",
                 fontWeight = FontWeight.Bold
             )
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row {
-                Text(
-                    text = "Habitaciones: ",
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    text = propiedad.numHabitaciones.toString(),
-                )
-            }
-            Row {
-                Text(
-                    text = "Superficie: ",
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    text = propiedad.superficie.toString(),
-                )
-            }
+            Text(
+                text = propiedad.direccion,
+            )
         }
 
-        Row (
+        // Lazy Row para el resto
+        LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ){
-            Row {
-                Text(
-                    text = "Dirección: ",
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = propiedad.direccion,
-                )
-            }
-            Row {
-                SmallFloatingActionButton(
-                    onClick = onDelete,
-                    containerColor = MaterialTheme.colorScheme.onErrorContainer,
-                    contentColor = MaterialTheme.colorScheme.surface
+            horizontalArrangement = Arrangement.SpaceBetween // Espacio entre elementos
+        ) {
+            items(listOf(
+                Pair("Tipo: ", propiedad.tipo.name),
+                Pair("Habitaciones: ", propiedad.numHabitaciones.toString())
+            )) { (titulo, valor) ->
+                Row(
+                    modifier = Modifier.padding(8.dp), // Espacio alrededor de cada item
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Icon(Icons.Filled.Delete, "Eliminar" )
+                    Text(
+                        text = titulo,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(text = valor)
                 }
             }
         }
+
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween // Espacio entre elementos
+        ) {
+            items(
+                listOf(
+                    Pair("Superficie: ", "${propiedad.superficie} m²"),
+                    Pair("Precio: ", "$${propiedad.precio}")
+                )
+            ) { (titulo, valor) ->
+                Row(
+                    modifier = Modifier.padding(8.dp), // Espacio alrededor de cada item
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = titulo,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(text = valor)
+                }
+            }
+        }
+
+        SmallFloatingActionButton(
+            onClick = onDelete,
+            containerColor = MaterialTheme.colorScheme.onErrorContainer,
+            contentColor = MaterialTheme.colorScheme.surface,
+
+        ) {
+            Icon(Icons.Filled.Delete, "Eliminar" )
+        }
+
     }
 }
 
